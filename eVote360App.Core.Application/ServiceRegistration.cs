@@ -13,6 +13,9 @@ namespace eVote360App.Core.Application
             services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUsuarioService, UsuarioService>();
             services.AddTransient<IPartidoPoliticoService, PartidoPoliticoService>();
+            services.AddTransient<IPuestoElectivoService, PuestoElectivoService>();
+            services.AddTransient<ICiudadanoService, CiudadanoService>();
+            services.AddTransient<IEleccionService, EleccionService>();
         }
     }
 }

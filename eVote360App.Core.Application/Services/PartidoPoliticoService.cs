@@ -29,12 +29,5 @@ namespace eVote360App.Core.Application.Services
 
             return await query.AnyAsync();
         }
-
-        public override async Task<List<PartidoPoliticoDto>> GetAllViewModelAsync()
-        {
-            var partidos = await _repository.GetAllQuery().Where(p => p.IsActive == true).ToListAsync();
-
-            return _mapper.Map<List<PartidoPoliticoDto>>(partidos);
-        }
     }
 }

@@ -58,5 +58,15 @@ namespace eVote360App.Infraestructure.Persistence.Repositories
 
             return null;
         }
+
+        public virtual async Task ChangeStatusAsync(int id)
+        {
+            var entity = await _context.Set<Entity>().FindAsync(id);
+            if (entity != null)
+            {
+                entity.IsActive = !entity.IsActive;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

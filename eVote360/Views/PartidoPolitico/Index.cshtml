@@ -45,9 +45,16 @@
                                 <td>@partido.Nombre</td>
                                 <td><span class="badge bg-secondary">@partido.Siglas</span></td>
                                 <td class="text-center">
-                                    <a asp-action="Edit" asp-route-id="@partido.Id" class="btn btn-sm btn-outline-warning">Editar</a>
+                                    <a asp-action="Edit" asp-route-id="@partido.Id" class="btn btn-sm btn-outline-warning @(!partido.IsActive ? "disabled" : "")">Editar</a>
 
-                                    <a asp-action="Delete" asp-route-id="@partido.Id" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este partido?');">Eliminar</a>
+                                    @if (partido.IsActive)
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@partido.Id" class="btn btn-sm btn-outline-danger">Desactivar</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@partido.Id" class="btn btn-sm btn-outline-success">Activar</a>
+                                    }
                                 </td>
                             </tr>
                         }

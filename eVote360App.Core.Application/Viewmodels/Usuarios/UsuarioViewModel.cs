@@ -15,5 +15,7 @@ namespace eVote360App.Core.Application.Viewmodels.Usuarios
         public required string NombreUsuario { get; set; }
         public required string RolNombre { get; set; }
         public bool IsActive { get; set; }
+        public string? PartidoNombre { get; set; }
+        public string? PartidoLogo { get; set; }
     }
 }

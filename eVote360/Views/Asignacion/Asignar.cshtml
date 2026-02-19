@@ -1,0 +1,53 @@
+﻿@model SaveAsignacionViewModel
+@{
+    ViewData["Title"] = "Vincular Dirigente";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4>Vincular Dirigente a Partido</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Asignar" method="post">
+                        <input type="hidden" asp-for="UsuarioId" />
+                        <input type="hidden" asp-for="NombreDirigente" />
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Dirigente Seleccionado:</label>
+                            <h5>@Model.NombreDirigente</h5>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="PartidoPoliticoId" class="form-label fw-bold">Seleccione el Partido Político <span class="text-danger">*</span></label>
+                            <select asp-for="PartidoPoliticoId" class="form-select">
+                                <option value="">-- Elija un partido de la lista --</option>
+                                @if (Model.Partidos != null)
+                                {
+                                    @foreach (var partido in Model.Partidos)
+                                    {
+                                        <option value="@partido.Id">@partido.Nombre (@partido.Siglas)</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="PartidoPoliticoId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Vinculación</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

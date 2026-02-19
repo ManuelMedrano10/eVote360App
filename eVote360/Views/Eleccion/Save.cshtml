@@ -1,0 +1,56 @@
+﻿@model SaveEleccionViewModel
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Crear Elección" : "Editar Elección";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4>@(Model.Id == 0 ? "Planificar Nueva Elección" : "Editar Detalles de Elección")</h4>
+                </div>
+                <div class="card-body">
+
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @Html.ValidationSummary(true)
+                        </div>
+                    }
+
+                    <form asp-action="Save" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">Nombre del Proceso Electoral <span class="text-danger">*</span></label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Ej. Elecciones Presidenciales 2028" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FechaRealizacion" class="form-label">Fecha de Realización <span class="text-danger">*</span></label>
+                            <input asp-for="FechaRealizacion" class="form-control" type="date" />
+                            <span asp-validation-for="FechaRealizacion" class="text-danger"></span>
+                        </div>
+
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-info-circle"></i> Al guardar esta elección, quedará automáticamente en curso. No podrá planificar otra hasta que finalice esta.
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Elección</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -17,5 +17,6 @@ namespace eVote360App.Core.Application.Interfaces.Services
         Task DeleteAsync(int id);
         Task<List<ViewModel>> GetAllViewModelAsync();
         Task<SaveViewModel> GetByIdAsync(int id);
+        Task ChangeStatusAsync(int id);
     }
 }

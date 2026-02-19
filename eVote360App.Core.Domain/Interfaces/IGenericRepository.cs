@@ -10,5 +10,6 @@ namespace eVote360App.Core.Domain.Interfaces
         Task<List<Entity>> GetAllAsync();
         IQueryable<Entity> GetAllQuery();
         Task<Entity?> GetByIdAsync(int id);
+        Task ChangeStatusAsync(int id);
     }
 }

@@ -49,5 +49,10 @@ namespace eVote360App.Core.Application.Services
             entity = await _repository.UpdateAsync(id, entity);
             return _mapper.Map<SaveViewModel>(entity);
         }
+
+        public virtual async Task ChangeStatusAsync(int id)
+        {
+            await _repository.ChangeStatusAsync(id);
+        }
     }
 }

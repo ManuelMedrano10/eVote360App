@@ -1,0 +1,67 @@
+﻿@model List<UsuarioViewModel>
+@{
+    ViewData["Title"] = "Mantenimiento de Usuarios";
+}
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <h2>Usuarios del Sistema</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Save" class="btn btn-primary">
+                <i class="bi bi-person-plus"></i> Crear Nuevo Usuario
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nombre de Usuario</th>
+                        <th>Nombre Completo</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@user.NombreUsuario</td>
+                            <td>@user.Nombre @user.Apellido</td>
+                            <td>@user.Email</td>
+                            <td><span class="badge bg-info text-dark">@user.RolNombre</span></td>
+                            <td>
+                                @if (user.IsActive)
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactivo</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-warning @(!user.IsActive ? "disabled" : "")">Editar</a>
+
+                                @if (user.IsActive)
+                                {
+                                    <a asp-action="ChangeStatus" asp-route-id="@user.Id" class="btn btn-sm btn-outline-danger">Desactivar</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="ChangeStatus" asp-route-id="@user.Id" class="btn btn-sm btn-outline-success">Activar</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

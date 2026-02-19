@@ -1,0 +1,93 @@
+﻿@model List<EleccionViewModel>
+@{
+    ViewData["Title"] = "Gestión de Elecciones";
+}
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <h2>Mantenimiento de Elecciones</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            @{
+                bool hayActiva = Model.Any(e => e.IsActive && !e.Finalizada);
+            }
+            <a asp-action="Save" class="btn btn-primary @(hayActiva ? "disabled" : "")">
+                <i class="bi bi-plus-circle"></i> Planificar Nueva Elección
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if (Model == null || Model.Count == 0)
+            {
+                <div class="alert alert-info text-center">No hay procesos electorales registrados.</div>
+            }
+            else
+            {
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre de Elección</th>
+                            <th>Fecha Planificada</th>
+                            <th>Estatus del Proceso</th>
+                            <th>Registro</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var eleccion in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@eleccion.Nombre</td>
+                                <td>@eleccion.FechaRealizacion.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    @if (eleccion.Finalizada)
+                                    {
+                                        <span class="badge bg-secondary">Concluida</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-primary">En Curso (Votaciones Abiertas)</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (eleccion.IsActive)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (!eleccion.Finalizada && eleccion.IsActive)
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@eleccion.Id" class="btn btn-sm btn-outline-warning">Editar</a>
+                                        <a asp-action="Finalizar" asp-route-id="@eleccion.Id" class="btn btn-sm btn-outline-dark mx-1" onclick="return confirm('¿Está seguro que desea FINALIZAR esta elección? Esto cerrará las votaciones permanentemente.');">Finalizar Proceso</a>
+                                    }
+
+                                    @if (eleccion.Finalizada && eleccion.IsActive)
+                                    {
+                                        <a href="#" class="btn btn-sm btn-success">Ver Resultados</a>
+                                    }
+
+                                    @if (eleccion.IsActive)
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@eleccion.Id" class="btn btn-sm btn-outline-danger">Desactivar</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@eleccion.Id" class="btn btn-sm btn-outline-success">Activar</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

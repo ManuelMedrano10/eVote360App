@@ -1,0 +1,72 @@
+﻿@model List<CiudadanoViewModel>
+@{
+    ViewData["Title"] = "Mantenimiento de Ciudadanos";
+}
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <h2>Ciudadanos (Electores)</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Save" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar Ciudadano
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if (Model == null || Model.Count == 0)
+            {
+                <div class="alert alert-info text-center">No hay ciudadanos registrados.</div>
+            }
+            else
+            {
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Documento Identidad</th>
+                            <th>Nombre Completo</th>
+                            <th>Email</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ciudadano in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@ciudadano.DocumentoIdentidad</td>
+                                <td>@ciudadano.Nombre @ciudadano.Apellido</td>
+                                <td>@ciudadano.Email</td>
+                                <td>
+                                    @if (ciudadano.IsActive)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="Edit" asp-route-id="@ciudadano.Id" class="btn btn-sm btn-outline-warning @(!ciudadano.IsActive ? "disabled" : "")">Editar</a>
+
+                                    @if (ciudadano.IsActive)
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@ciudadano.Id" class="btn btn-sm btn-outline-danger">Desactivar</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@ciudadano.Id" class="btn btn-sm btn-outline-success">Activar</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

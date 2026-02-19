@@ -1,0 +1,70 @@
+﻿@model List<PuestoElectivoViewModel>
+@{
+    ViewData["Title"] = "Mantenimiento de Puestos Electivos";
+}
+
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <h2>Puestos Electivos</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <a asp-action="Save" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar Nuevo Puesto
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if (Model == null || Model.Count == 0)
+            {
+                <div class="alert alert-info text-center">No hay puestos electivos registrados.</div>
+            }
+            else
+            {
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var puesto in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@puesto.Nombre</td>
+                                <td>@puesto.Descripcion</td>
+                                <td>
+                                    @if (puesto.IsActive)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="Edit" asp-route-id="@puesto.Id" class="btn btn-sm btn-outline-warning @(!puesto.IsActive ? "disabled" : "")">Editar</a>
+
+                                    @if (puesto.IsActive)
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@puesto.Id" class="btn btn-sm btn-outline-danger">Desactivar</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="ChangeStatus" asp-route-id="@puesto.Id" class="btn btn-sm btn-outline-success">Activar</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

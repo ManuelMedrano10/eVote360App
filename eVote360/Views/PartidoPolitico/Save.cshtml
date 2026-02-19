@@ -12,14 +12,6 @@
                     <h4>@(Model.Id == 0 ? "Registrar Nuevo Partido" : "Editar Partido")</h4>
                 </div>
                 <div class="card-body">
-
-                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Siglas"] != null)
-                    {
-                        <div class="alert alert-danger">
-                            @Html.ValidationMessage("Siglas")
-                        </div>
-                    }
-
                     <form asp-controller="PartidoPolitico" asp-action="Save" method="post" enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />

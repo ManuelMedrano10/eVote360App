@@ -10,11 +10,19 @@ namespace eVote360App.Core.Application.Mappings
     {
         public UsuarioProfile()
         {
+            CreateMap<LoginViewModel, LoginRequestDto>();
             CreateMap<UsuarioDto, UsuarioViewModel>()
                 .ForMember(dest => dest.RolNombre, opt => opt.MapFrom(src 
             => src.Rol == (int)RolUsuario.Administrador ? "Administrador" : "DirigentePolitico"));
+            CreateMap<SaveUsuarioDto, SaveUsuarioViewModel>()
+                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<SaveAsignacionViewModel, UpdateAsignacionDto>().ReverseMap();
+
             CreateMap<Usuario, UsuarioDto>()
-                .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => (int)src.Rol));
+                .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => (int)src.Rol))
+                .ForMember(dest => dest.PartidoNombre, opt => opt.MapFrom(src => src.PartidoPolitico != null ? src.PartidoPolitico.Nombre : "Sin Asignar"))
+                .ForMember(dest => dest.PartidoLogo, opt => opt.MapFrom(src => src.PartidoPolitico != null ? src.PartidoPolitico.Logo : null));
 
             CreateMap<LoginRequestDto, Usuario>()
                 .ForMember(dest => dest.Nombre, opt => opt.Ignore())
@@ -25,16 +33,11 @@ namespace eVote360App.Core.Application.Mappings
                 .ForMember(dest => dest.PartidoPolitico, opt => opt.Ignore())
                 .ForMember(dest => dest.PartidoPoliticoId, opt => opt.Ignore());
 
-            CreateMap<Usuario, SaveUsuarioViewModel>()
-                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore())
+            CreateMap<Usuario, SaveUsuarioDto>()
                 .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => (int)src.Rol))
                 .ReverseMap()
                 .ForMember(dest => dest.IsActive, opt => opt.Ignore())
-                .ForMember(dest => dest.PartidoPolitico, opt => opt.Ignore())
-                .ForMember(dest => dest.PartidoPoliticoId, opt => opt.Ignore());
-
-            CreateMap<Usuario, UsuarioViewModel>()
-                .ForMember(dest => dest.RolNombre, opt => opt.MapFrom(src => src.Rol.ToString()));
+                .ForMember(dest => dest.PartidoPolitico, opt => opt.Ignore());
         }
     }
 }

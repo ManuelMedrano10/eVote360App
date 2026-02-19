@@ -47,14 +47,8 @@ namespace eVote360App.Controllers
                 return View(vm);
             }
 
-            SavePartidoPoliticoDto dto = new ()
-            {
-                Id = vm.Id,
-                Nombre = vm.Nombre,
-                Descripcion = vm.Descripcion,
-                Siglas = vm.Siglas,
-                Logo = vm.Logo ?? string.Empty
-            };
+            SavePartidoPoliticoDto dto = _mapper.Map<SavePartidoPoliticoDto>(vm);
+            dto.Logo = vm.Logo ?? string.Empty;
 
             if (vm.File != null && vm.File.Length > 0)
             {
@@ -100,21 +94,14 @@ namespace eVote360App.Controllers
                 return RedirectToRoute(new { controller = "PartidoPolitico", action = "Index" });
             }
 
-            SavePartidoPoliticoViewModel vm = new()
-            {
-                Id = partido.Id,
-                Nombre = partido.Nombre,
-                Descripcion = partido.Descripcion,
-                Siglas = partido.Siglas,
-                Logo = partido.Logo
-            };
+            SavePartidoPoliticoViewModel vm = _mapper.Map<SavePartidoPoliticoViewModel>(partido);
 
             return View("Save", vm);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> ChangeStatus(int id)
         {
-            await _service.DeleteAsync(id);
+            await _service.ChangeStatusAsync(id);
             return RedirectToRoute(new { controller = "PartidoPolitico", action = "Index" });
         }
     }
