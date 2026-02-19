@@ -23,7 +23,7 @@ namespace eVote360App.Controllers
         {
             if(User.Identity != null && User.Identity.IsAuthenticated)
             {
-                return RedirectToRoute(new { controller = "Usuario", action = "Login"});
+                return RedirectToRoute(new { controller = "Home", action = "Index"});
             }
 
             return View("Login", new LoginViewModel() { NombreUsuario = "", Password = ""});
@@ -68,7 +68,7 @@ namespace eVote360App.Controllers
             var identity = new ClaimsIdentity(claims, "CookieAuth");
             var principal = new ClaimsPrincipal(identity);
 
-            return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 
         public async Task<IActionResult> Logout()

@@ -4,6 +4,7 @@ using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.Usuarios;
 using eVote360App.Core.Domain.Entities;
 using eVote360App.Core.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace eVote360App.Core.Application.Services
 {
@@ -19,14 +20,32 @@ namespace eVote360App.Core.Application.Services
             _mapper = mapper;
         }
 
-        public Task<bool> GetNombreUsuarioAsync(string nombreUsuario, int currentId = 0)
+        public async Task<bool> GetNombreUsuarioAsync(string nombreUsuario, int currentId = 0)
         {
-            throw new NotImplementedException();
+            var query = _usuarioRepository.GetAllQuery()
+                .Where(u => u.NombreUsuario == nombreUsuario && u.IsActive == true);
+
+            if (currentId != 0)
+            {
+                query = query.Where(u => u.Id != currentId);
+            }
+
+            return await query.AnyAsync();
         }
 
-        public Task<UsuarioDto?> LoginAsync(LoginRequestDto loginDto)
+        public async Task<UsuarioDto?> LoginAsync(LoginRequestDto loginDto)
         {
-            throw new NotImplementedException();
+            var usuario = await _usuarioRepository.GetAllQuery()
+                .FirstOrDefaultAsync(u => u.NombreUsuario == loginDto.NombreUsuario
+                                       && u.Password == loginDto.Password
+                                       && u.IsActive == true);
+
+            if (usuario == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<UsuarioDto>(usuario);
         }
     }
 }

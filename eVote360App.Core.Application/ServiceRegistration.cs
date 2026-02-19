@@ -12,6 +12,7 @@ namespace eVote360App.Core.Application
             services.AddAutoMapper(config => config.AddMaps(Assembly.GetExecutingAssembly()));
             services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
             services.AddTransient<IUsuarioService, UsuarioService>();
+            services.AddTransient<IPartidoPoliticoService, PartidoPoliticoService>();
         }
     }
 }

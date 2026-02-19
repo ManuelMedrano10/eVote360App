@@ -1,4 +1,5 @@
-﻿using eVote360App.Core.Domain.Entities;
+﻿using eVote360App.Core.Domain.Common.Enums;
+using eVote360App.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,7 +23,20 @@ namespace eVote360App.Infraestructure.Persistence.EntityConfigurations
             builder.Property(u => u.Password).IsRequired().HasMaxLength(255);
             #endregion
 
-            #region relationships
+            #region Data Seeding
+            builder.HasData(
+                new Usuario
+                {
+                    Id = 1,
+                    Nombre = "Admin",
+                    Apellido = "Principal",
+                    Email = "admin@gmail.com",
+                    NombreUsuario = "AdminJose",
+                    Password = "1234",
+                    Rol = RolUsuario.Administrador,
+                    IsActive = true
+                }
+            );
             #endregion
         }
     }

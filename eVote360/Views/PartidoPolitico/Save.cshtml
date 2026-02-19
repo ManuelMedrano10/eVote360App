@@ -1,0 +1,74 @@
+﻿@model SavePartidoPoliticoViewModel
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Registrar Partido" : "Editar Partido";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4>@(Model.Id == 0 ? "Registrar Nuevo Partido" : "Editar Partido")</h4>
+                </div>
+                <div class="card-body">
+
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Siglas"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @Html.ValidationMessage("Siglas")
+                        </div>
+                    }
+
+                    <form asp-action="Save" method="post" enctype="multipart/form-data">
+
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Logo" /> <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">Nombre del Partido <span class="text-danger">*</span></label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Ej. Partido Democrático" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Siglas" class="form-label">Siglas <span class="text-danger">*</span></label>
+                                <input asp-for="Siglas" class="form-control" placeholder="Ej. PD" />
+                                <span asp-validation-for="Siglas" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="File" class="form-label">Logo del Partido @(Model.Id == 0 ? "(Obligatorio)" : "(Opcional si no desea cambiarlo)")</label>
+                                <input asp-for="File" class="form-control" type="file" accept="image/*" />
+                                @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.Logo))
+                                {
+                                    <div class="mt-2 text-muted small">
+                                        Logo actual: <img src="@Model.Logo" style="width: 30px; height: 30px; object-fit: contain;" />
+                                    </div>
+                                }
+                                <span asp-validation-for="File" class="text-danger"></span>
+                                @Html.ValidationMessage("File", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Descripcion" class="form-label">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="3" placeholder="Descripción opcional..."></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar y Volver</a>
+                            <button type="submit" class="btn btn-success">Guardar Partido</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
