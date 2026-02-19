@@ -68,6 +68,8 @@ namespace eVote360App.Controllers
             var identity = new ClaimsIdentity(claims, "CookieAuth");
             var principal = new ClaimsPrincipal(identity);
 
+            await HttpContext.SignInAsync("CookieAuth", principal);
+
             return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 

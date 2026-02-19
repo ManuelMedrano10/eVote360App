@@ -1,4 +1,5 @@
-﻿using eVote360App.Core.Application.Dtos.PartidosPoliticos;
+﻿using AutoMapper;
+using eVote360App.Core.Application.Dtos.PartidosPoliticos;
 using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.PartidosPoliticos;
 using Microsoft.AspNetCore.Authorization;
@@ -6,27 +7,33 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eVote360App.Controllers
 {
-    [Authorize(Roles = "Adiministrador")]
+    [Authorize(Roles = "Administrador")]
     public class PartidoPoliticoController : Controller
     {
         private readonly IPartidoPoliticoService _service;
-        public PartidoPoliticoController(IPartidoPoliticoService service)
+        private readonly IMapper _mapper;
+        public PartidoPoliticoController(IPartidoPoliticoService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
+
         }
         public async Task<IActionResult> Index()
         {
-            var partidos = await _service.GetAllViewModelAsync();
-            return View(partidos);
+            var partidosDto = await _service.GetAllViewModelAsync();
+
+            var partidosVm = _mapper.Map<List<PartidoPoliticoViewModel>>(partidosDto);
+
+            return View(partidosVm);
         }
 
         public IActionResult Save()
         {
-            return View(new SavePartidoPoliticoViewModel() { Nombre = "", Siglas = "", Logo = ""});
+            return View(new SavePartidoPoliticoViewModel() {Id = 0, Nombre = "", Siglas = "", Logo = ""});
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SavePartidoPoliticoViewModel vm)
+        public async Task<IActionResult> Save(SavePartidoPoliticoViewModel vm)
         {
             if (!ModelState.IsValid)
             {
@@ -102,7 +109,7 @@ namespace eVote360App.Controllers
                 Logo = partido.Logo
             };
 
-            return View("Create", vm);
+            return View("Save", vm);
         }
 
         public async Task<IActionResult> Delete(int id)
