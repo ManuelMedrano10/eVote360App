@@ -1,4 +1,7 @@
-namespace eVote360
+using eVote360App.Core.Application;
+using eVote360App.Infraestructure.Persistence;
+
+namespace eVote360App
 {
     public class Program
     {
@@ -8,6 +11,17 @@ namespace eVote360
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddPersistenceLayer(builder.Configuration);
+            builder.Services.AddApplicationLayer();
+
+            builder.Services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth", config =>
+                {
+                    config.Cookie.Name = "eVote360App.AuthCookie";
+                    config.LoginPath = "/Usuario/Login";
+                    config.AccessDeniedPath = "/Home/AccesoDenegado";
+                    config.ExpireTimeSpan = TimeSpan.FromHours(2);
+                });
 
             var app = builder.Build();
 
@@ -22,6 +36,7 @@ namespace eVote360
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
