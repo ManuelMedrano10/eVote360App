@@ -6,5 +6,7 @@ namespace eVote360App.Core.Domain.Entities
     {
         public required string Nombre { get; set; }
         public required string Descripcion { get; set; }
+
+        public ICollection<Candidato>? Candidatos { get; set; }
     }
 }

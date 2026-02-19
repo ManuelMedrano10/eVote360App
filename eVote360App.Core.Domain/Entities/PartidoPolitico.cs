@@ -10,8 +10,11 @@ namespace eVote360App.Core.Domain.Entities
     public class PartidoPolitico : BasicEntity<int>
     {
         public required string Nombre { get; set; }
-        public required string Descripcion { get; set; }
+        public string? Descripcion { get; set; }
         public required string Siglas { get; set; }
         public required string Logo { get; set; }
+
+        public ICollection<Candidato>? Candidatos { get; set; }
+        public ICollection<Usuario>? Dirigentes { get; set; }
     }
 }

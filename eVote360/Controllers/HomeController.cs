@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using eVote360.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eVote360.Controllers
@@ -21,12 +19,6 @@ namespace eVote360.Controllers
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

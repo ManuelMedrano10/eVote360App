@@ -1,6 +1,8 @@
-﻿namespace eVote360App.Core.Domain.Interfaces
+﻿using eVote360App.Core.Domain.Common;
+
+namespace eVote360App.Core.Domain.Interfaces
 {
-    public interface IGenericRepository<Entity> where Entity : class
+    public interface IGenericRepository<Entity> where Entity : BasicEntity<int>
     {
         Task<Entity?> AddAsync(Entity entity);
         Task<Entity?> UpdateAsync(int id, Entity entity);
