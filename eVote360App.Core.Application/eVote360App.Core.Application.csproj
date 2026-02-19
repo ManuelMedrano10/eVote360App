@@ -9,12 +9,11 @@
   <ItemGroup>
     <Folder Include="Dtos\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Mappings\" />
-    <Folder Include="Viewmodels\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.13" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.13" />
   </ItemGroup>
