@@ -72,16 +72,19 @@ namespace eVote360App.Controllers
 
             List<SaveVotoDto> votosEmitidos = new();
 
-            foreach (var puesto in papeleta.Puestos)
+            if (papeleta.Puestos != null)
             {
-                if (puesto.SeleccionCandidatoId != 0)
+                foreach (var puesto in papeleta.Puestos)
                 {
-                    votosEmitidos.Add(new SaveVotoDto
+                    if (puesto.SeleccionCandidatoId != 0)
                     {
-                        EleccionId = eleccionId,
-                        PuestoElectivoId = puesto.PuestoId,
-                        CandidatoId = puesto.SeleccionCandidatoId
-                    });
+                        votosEmitidos.Add(new SaveVotoDto
+                        {
+                            EleccionId = eleccionId,
+                            PuestoElectivoId = puesto.PuestoId,
+                            CandidatoId = puesto.SeleccionCandidatoId
+                        });
+                    }
                 }
             }
             if (votosEmitidos.Count != 0)
@@ -96,7 +99,7 @@ namespace eVote360App.Controllers
             });
             await HttpContext.SignOutAsync("CookieAuth");
 
-            return RedirectToRoute(new { controller = "Home", action = "Completado" });
+            return RedirectToRoute(new { controller = "Votacion", action = "Completado" });
         }
 
         [AllowAnonymous]

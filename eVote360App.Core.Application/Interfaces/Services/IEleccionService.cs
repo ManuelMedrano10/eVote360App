@@ -7,5 +7,6 @@ namespace eVote360App.Core.Application.Interfaces.Services
     {
         Task<bool> GetEleccionActivaAsync(int? currentEleccionId = null);
         Task FinalizarEleccionAsync(int id);
+        Task<ResultadoEleccionDto?> GetResultadosAsync(int eleccionId);
     }
 }

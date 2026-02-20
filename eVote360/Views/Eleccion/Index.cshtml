@@ -78,7 +78,7 @@
 
                                     @if (eleccion.Finalizada && eleccion.IsActive)
                                     {
-                                        <a href="#" class="btn btn-sm btn-success">Ver Resultados</a>
+                                        <a asp-action="Resultado" asp-route-id="@eleccion.Id" class="btn btn-sm btn-success">Ver Resultados</a>
                                     }
 
                                     @if (eleccion.IsActive)

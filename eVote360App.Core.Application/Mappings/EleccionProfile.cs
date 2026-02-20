@@ -18,6 +18,9 @@ namespace eVote360App.Core.Application.Mappings
 
             CreateMap<EleccionDto, EleccionViewModel>().ReverseMap();
             CreateMap<SaveEleccionDto, SaveEleccionViewModel>().ReverseMap();
+            CreateMap<ResultadoEleccionDto, ResultadoEleccionViewModel>().ReverseMap();
+            CreateMap<ResultadoPuestoDto, ResultadoPuestoViewModel>().ReverseMap();
+            CreateMap<ResultadoCandidatoDto, ResultadoCandidatoViewModel>().ReverseMap();
         }
     }
 }

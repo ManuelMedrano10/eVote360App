@@ -2,6 +2,7 @@
 using eVote360App.Core.Application.Dtos.Elecciones;
 using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.Eleccion;
+using eVote360App.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -80,6 +81,19 @@ namespace eVote360App.Controllers
         {
             await _service.ChangeStatusAsync(id);
             return RedirectToRoute(new { controller = "Eleccion", action = "Index" });
+        }
+
+        [BlockDuringElectionAtribute]
+        public async Task<IActionResult> Resultado(int id)
+        {
+            var dto = await _service.GetResultadosAsync(id);
+            if (dto == null)
+            {
+                return RedirectToRoute(new { controller = "Eleccion", action = "Index" });
+            } 
+                
+            var vm = _mapper.Map<ResultadoEleccionViewModel>(dto);
+            return View(vm);
         }
     }
 }
