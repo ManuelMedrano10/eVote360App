@@ -2,6 +2,7 @@
 using eVote360App.Core.Application.Dtos.PuestoElectivo;
 using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.PuestosElectivos;
+using eVote360App.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,12 +25,14 @@ namespace eVote360App.Controllers
 
             return View(puestosVm);
         }
+        [BlockDuringElectionAtribute]
         public IActionResult Save()
         {
             return View(new SavePuestoElectivoViewModel() { Id = 0, Nombre = "", Descripcion = "" });
         }
 
         [HttpPost]
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Save(SavePuestoElectivoViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -50,7 +53,7 @@ namespace eVote360App.Controllers
 
             return RedirectToRoute(new { controller = "PuestoElectivo", action = "Index" });
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Edit(int id)
         {
             var puestoDto = await _service.GetByIdAsync(id);
@@ -62,7 +65,7 @@ namespace eVote360App.Controllers
             SavePuestoElectivoViewModel vm = _mapper.Map<SavePuestoElectivoViewModel>(puestoDto);
             return View("Save", vm);
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> ChangeStatus(int id)
         {
             await _service.ChangeStatusAsync(id);

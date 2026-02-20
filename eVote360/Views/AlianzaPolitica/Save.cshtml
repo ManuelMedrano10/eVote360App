@@ -1,0 +1,52 @@
+﻿@model SaveAlianzaPoliticaViewModel
+@{
+    ViewData["Title"] = "Crear Alianza";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4>Establecer Alianza Política</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Save" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="PartidoSolicitanteId" />
+
+                        <div class="mb-4">
+                            <label asp-for="PartidoReceptorId" class="form-label fw-bold">Seleccione el Partido para Aliarse <span class="text-danger">*</span></label>
+                            <select asp-for="PartidoReceptorId" class="form-select">
+                                <option value="">-- Elija un Partido Político --</option>
+                                @if (Model.PartidosDisponibles != null)
+                                {
+                                    @foreach (var partido in Model.PartidosDisponibles)
+                                    {
+                                        <option value="@partido.Id">@partido.Nombre (@partido.Siglas)</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="PartidoReceptorId" class="text-danger"></span>
+                        </div>
+
+                        <div class="alert alert-info py-2">
+                            <small><i class="bi bi-info-circle"></i> Al establecer esta alianza, los votos podrán combinarse según lo indique la ley electoral.</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Alianza</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

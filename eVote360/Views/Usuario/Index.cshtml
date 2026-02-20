@@ -4,6 +4,13 @@
 }
 
 <div class="container mt-4">
+    @if (TempData["ElectionError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> @TempData["ElectionError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
     <div class="row mb-3">
         <div class="col-md-8">
             <h2>Usuarios del Sistema</h2>

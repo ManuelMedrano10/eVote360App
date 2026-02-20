@@ -3,6 +3,7 @@ using eVote360App.Core.Application.Dtos.Usuarios;
 using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.PartidosPoliticos;
 using eVote360App.Core.Application.Viewmodels.Usuarios;
+using eVote360App.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace eVote360App.Controllers
 
             return View(vms);
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Asignar(int id)
         {
             var usuario = await _usuarioService.GetByIdAsync(id);
@@ -50,6 +51,7 @@ namespace eVote360App.Controllers
         }
 
         [HttpPost]
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Asignar(SaveAsignacionViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -64,7 +66,7 @@ namespace eVote360App.Controllers
 
             return RedirectToRoute(new { controller = "Asignacion", action = "Index" });
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Desvincular(int id)
         {
             await _usuarioService.RemoverAsignacionAsync(id);

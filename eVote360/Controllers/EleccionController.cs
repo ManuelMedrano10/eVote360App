@@ -26,6 +26,7 @@ namespace eVote360App.Controllers
 
             return View(vms);
         }
+
         public IActionResult Save()
         {
             return View(new SaveEleccionViewModel() { Id = 0, Nombre = ""});

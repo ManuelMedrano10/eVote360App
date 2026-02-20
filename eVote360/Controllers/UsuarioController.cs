@@ -3,6 +3,7 @@ using AutoMapper;
 using eVote360App.Core.Application.Dtos.Usuarios;
 using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.Usuarios;
+using eVote360App.Filters;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace eVote360App.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
+        [BlockDuringElectionAtribute]
         public IActionResult Save()
         {
             return View(new SaveUsuarioViewModel() 
@@ -44,6 +46,7 @@ namespace eVote360App.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Save(SaveUsuarioViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -84,6 +87,7 @@ namespace eVote360App.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Edit(int id)
         {
             var usuarioDto = await _usuarioService.GetByIdAsync(id);
@@ -100,6 +104,7 @@ namespace eVote360App.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> ChangeStatus(int id)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

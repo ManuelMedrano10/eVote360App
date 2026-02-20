@@ -16,6 +16,8 @@ namespace eVote360App.Infraestructure.Persistence.Contexts
         public DbSet<PartidoPolitico> PartidosPoliticos { get; set; }
         public DbSet<PuestoElectivo> PuestosElectivos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Voto> Votos { get; set; }
+        public DbSet<RegistroVotante> RegistrosVotantes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

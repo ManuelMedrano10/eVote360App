@@ -2,6 +2,7 @@
 using eVote360App.Core.Application.Dtos.Ciudadanos;
 using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.Ciudadano;
+using eVote360App.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +26,7 @@ namespace eVote360App.Controllers
 
             return View(vms);
         }
-
+        [BlockDuringElectionAtribute]
         public IActionResult Save()
         {
             return View(new SaveCiudadanoViewModel() 
@@ -39,6 +40,7 @@ namespace eVote360App.Controllers
         }
 
         [HttpPost]
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Save(SaveCiudadanoViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -66,7 +68,7 @@ namespace eVote360App.Controllers
 
             return RedirectToRoute(new { controller = "Ciudadano", action = "Index" });
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Edit(int id)
         {
             var dto = await _service.GetByIdAsync(id);
@@ -78,7 +80,7 @@ namespace eVote360App.Controllers
             SaveCiudadanoViewModel vm = _mapper.Map<SaveCiudadanoViewModel>(dto);
             return View("Save", vm);
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> ChangeStatus(int id)
         {
             await _service.ChangeStatusAsync(id);

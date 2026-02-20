@@ -1,0 +1,93 @@
+﻿@model List<AlianzaPoliticaViewModel>
+@{
+    ViewData["Title"] = "Mis Alianzas";
+}
+
+<div class="container mt-4">
+    @if (TempData["ElectionError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> @TempData["ElectionError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+
+    @if (ViewBag.SinPartido == true)
+    {
+        <div class="alert alert-danger text-center mt-5 p-5 shadow-sm">
+            <h3 class="text-danger"><i class="bi bi-shield-lock-fill" style="font-size: 2rem;"></i> Acceso Restringido</h3>
+            <p class="fs-5 mt-3">Usted aún no ha sido asignado a un Partido Político.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <h2>Alianzas Políticas de mi Partido</h2>
+            </div>
+            <div class="col-md-4 text-end">
+                <a asp-action="Save" class="btn btn-primary">
+                    <i class="bi bi-diagram-3-fill"></i> Establecer Nueva Alianza
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (Model == null || Model.Count == 0)
+                {
+                    <div class="alert alert-info text-center">Su partido no ha establecido alianzas políticas con otros partidos aún.</div>
+                }
+                else
+                {
+                    <table class="table table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Logo del Aliado</th>
+                                <th>Partido Político Aliado</th>
+                                <th>Estatus Operativo</th>
+                                <th>Fase de Solicitud</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var alianza in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@alianza.PartidoReceptorLogo" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;" />
+                                    </td>
+                                    <td class="fw-bold">@alianza.PartidoReceptorNombre</td>
+                                    <td>
+                                        @if (alianza.IsActive)
+                                        {
+                                            <span class="badge bg-success">Activa</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Inactiva (Rota)</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info text-dark">@alianza.EstadoAlianza</span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (alianza.IsActive)
+                                        {
+                                            <a asp-action="ChangeStatus" asp-route-id="@alianza.Id" class="btn btn-sm btn-outline-danger">Romper Alianza</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="ChangeStatus" asp-route-id="@alianza.Id" class="btn btn-sm btn-outline-success">Restablecer Alianza</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    }
+</div>

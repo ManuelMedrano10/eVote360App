@@ -33,6 +33,8 @@ namespace eVote360App.Infraestructure.Persistence
             services.AddTransient<IPartidoPoliticoRepository, PartidoPoliticoRepository>();
             services.AddTransient<IPuestoElectivoRepository, PuestoElectivoRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<IVotoRepository, VotoRepository>();
+            services.AddTransient<IRegistroVotanteRepository, RegistroVotanteRepository>();
             #endregion
         }
     }

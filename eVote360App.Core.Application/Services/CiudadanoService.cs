@@ -17,6 +17,17 @@ namespace eVote360App.Core.Application.Services
             _repository = repository;
             _mapper = mapper;
         }
+
+        public async Task<CiudadanoDto?> GetByDocumentoAsync(string documento)
+        {
+            var ciudadano = await _repository.GetAllQuery()
+                .FirstOrDefaultAsync(c => c.DocumentoIdentidad == documento && c.IsActive == true);
+
+            if (ciudadano == null) return null;
+
+            return _mapper.Map<CiudadanoDto>(ciudadano);
+        }
+
         public async Task<bool> GetDocumentoAsync(string documento, int currentId = 0)
         {
             var query = _repository.GetAllQuery().Where(c => c.DocumentoIdentidad == documento);

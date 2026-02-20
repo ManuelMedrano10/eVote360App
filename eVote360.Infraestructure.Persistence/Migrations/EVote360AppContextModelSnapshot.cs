@@ -226,6 +226,32 @@ namespace eVote360App.Infraestructure.Persistence.Migrations
                     b.ToTable("PuestosElectivos", (string)null);
                 });
 
+            modelBuilder.Entity("eVote360App.Core.Domain.Entities.RegistroVotante", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CiudadanoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EleccionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CiudadanoId");
+
+                    b.HasIndex("EleccionId");
+
+                    b.ToTable("RegistrosVotantes");
+                });
+
             modelBuilder.Entity("eVote360App.Core.Domain.Entities.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -291,6 +317,37 @@ namespace eVote360App.Infraestructure.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("eVote360App.Core.Domain.Entities.Voto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CandidatoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EleccionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PuestoElectivoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidatoId");
+
+                    b.HasIndex("EleccionId");
+
+                    b.HasIndex("PuestoElectivoId");
+
+                    b.ToTable("Votos", (string)null);
+                });
+
             modelBuilder.Entity("eVote360App.Core.Domain.Entities.AlianzaPolitica", b =>
                 {
                     b.HasOne("eVote360App.Core.Domain.Entities.PartidoPolitico", "PartidoReceptor")
@@ -328,6 +385,25 @@ namespace eVote360App.Infraestructure.Persistence.Migrations
                     b.Navigation("PuestoElectivo");
                 });
 
+            modelBuilder.Entity("eVote360App.Core.Domain.Entities.RegistroVotante", b =>
+                {
+                    b.HasOne("eVote360App.Core.Domain.Entities.Ciudadano", "Ciudadano")
+                        .WithMany()
+                        .HasForeignKey("CiudadanoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("eVote360App.Core.Domain.Entities.Eleccion", "Eleccion")
+                        .WithMany()
+                        .HasForeignKey("EleccionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Ciudadano");
+
+                    b.Navigation("Eleccion");
+                });
+
             modelBuilder.Entity("eVote360App.Core.Domain.Entities.Usuario", b =>
                 {
                     b.HasOne("eVote360App.Core.Domain.Entities.PartidoPolitico", "PartidoPolitico")
@@ -336,6 +412,33 @@ namespace eVote360App.Infraestructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("PartidoPolitico");
+                });
+
+            modelBuilder.Entity("eVote360App.Core.Domain.Entities.Voto", b =>
+                {
+                    b.HasOne("eVote360App.Core.Domain.Entities.Candidato", "Candidato")
+                        .WithMany()
+                        .HasForeignKey("CandidatoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("eVote360App.Core.Domain.Entities.Eleccion", "Eleccion")
+                        .WithMany()
+                        .HasForeignKey("EleccionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("eVote360App.Core.Domain.Entities.PuestoElectivo", "PuestoElectivo")
+                        .WithMany()
+                        .HasForeignKey("PuestoElectivoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Candidato");
+
+                    b.Navigation("Eleccion");
+
+                    b.Navigation("PuestoElectivo");
                 });
 
             modelBuilder.Entity("eVote360App.Core.Domain.Entities.PartidoPolitico", b =>

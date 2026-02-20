@@ -6,5 +6,6 @@ namespace eVote360App.Core.Application.Interfaces.Services
     public interface ICiudadanoService : IGenericService<SaveCiudadanoDto, CiudadanoDto, Ciudadano>
     {
         Task<bool> GetDocumentoAsync(string documento, int currentId = 0);
+        Task<CiudadanoDto?> GetByDocumentoAsync(string documento);
     }
 }

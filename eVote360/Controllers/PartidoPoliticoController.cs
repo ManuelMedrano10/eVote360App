@@ -2,6 +2,7 @@
 using eVote360App.Core.Application.Dtos.PartidosPoliticos;
 using eVote360App.Core.Application.Interfaces.Services;
 using eVote360App.Core.Application.Viewmodels.PartidosPoliticos;
+using eVote360App.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,13 +27,14 @@ namespace eVote360App.Controllers
 
             return View(partidosVm);
         }
-
+        [BlockDuringElectionAtribute]
         public IActionResult Save()
         {
             return View(new SavePartidoPoliticoViewModel() {Id = 0, Nombre = "", Siglas = "", Logo = ""});
         }
 
         [HttpPost]
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Save(SavePartidoPoliticoViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -85,7 +87,7 @@ namespace eVote360App.Controllers
 
             return RedirectToRoute(new {controller = "PartidoPolitico", action = "Index"});
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> Edit(int id)
         {
             var partido = await _service.GetByIdAsync(id);
@@ -98,7 +100,7 @@ namespace eVote360App.Controllers
 
             return View("Save", vm);
         }
-
+        [BlockDuringElectionAtribute]
         public async Task<IActionResult> ChangeStatus(int id)
         {
             await _service.ChangeStatusAsync(id);

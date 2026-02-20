@@ -1,0 +1,94 @@
+﻿@using eVote360App.Core.Application.Services
+@model List<CandidatoViewModel>
+@{
+    ViewData["Title"] = "Mis Candidatos";
+}
+
+<div class="container mt-4">
+    @if (TempData["ElectionError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> @TempData["ElectionError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (ViewBag.SinPartido == true)
+    {
+        <div class="alert alert-danger text-center mt-5 p-5 shadow-sm">
+            <h3 class="text-danger"><i class="bi bi-shield-lock-fill" style="font-size: 2rem;"></i> Acceso Restringido</h3>
+            <p class="fs-5 mt-3">Usted aún no ha sido asignado a un Partido Político por el Administrador.</p>
+            <p class="text-muted">No puede visualizar ni gestionar candidatos hasta que se complete su vinculación.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <h2>Candidatos de mi Partido</h2>
+            </div>
+            <div class="col-md-4 text-end">
+                <a asp-action="Save" class="btn btn-primary">
+                    <i class="bi bi-person-plus-fill"></i> Agregar Nuevo Candidato
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (Model == null || Model.Count == 0)
+                {
+                    <div class="alert alert-info text-center">No hay candidatos registrados en su partido.</div>
+                }
+                else
+                {
+                    <table class="table table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nombre Completo</th>
+                                <th>Puesto a Aspirar</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var candidato in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@candidato.Foto" alt="Foto de @candidato.Nombre" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" />
+                                    </td>
+                                    <td class="fw-bold">@candidato.Nombre @candidato.Apellido</td>
+                                    <td><span class="badge bg-secondary">@candidato.PuestoNombre</span></td>
+                                    <td>
+                                        @if (candidato.IsActive)
+                                        {
+                                            <span class="badge bg-success">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Inactivo</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="Edit" asp-route-id="@candidato.Id" class="btn btn-sm btn-outline-warning @(!candidato.IsActive ? "disabled" : "")">Editar</a>
+
+                                        @if (candidato.IsActive)
+                                        {
+                                            <a asp-action="ChangeStatus" asp-route-id="@candidato.Id" class="btn btn-sm btn-outline-danger">Desactivar</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="ChangeStatus" asp-route-id="@candidato.Id" class="btn btn-sm btn-outline-success">Activar</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    }
+</div>
